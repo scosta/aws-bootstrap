@@ -6,15 +6,21 @@ CLI_PROFILE=awsbootstrap
 
 EC2_INSTANCE_TYPE=t2.micro 
 
+AWS_ACCOUNT_ID=`aws sts get-caller-identity --profile awsbootstrap \
+  --query "Account" --output text`
+CODEPIPELINE_BUCKET="$STACK_NAME-$REGION-codepipeline-$AWS_ACCOUNT_ID" 
+
 # Deploy the CloudFormation template
 echo -e "\n\n=========== Deploying main.yml ==========="
 aws cloudformation deploy \
 --region $REGION \
 --profile $CLI_PROFILE \
 --stack-name $STACK_NAME \
---template-file main.yml \
+--template-file setup.yml \
 --capabilities CAPABILITY_NAMED_IAM \
---parameter-overrides EC2InstanceType=$EC2_INSTANCE_TYPE
+--parameter-overrides \
+EC2InstanceType=$EC2_INSTANCE_TYPE \
+CodePipelineBucket=$CODEPIPELINE_BUCKET
 
 # If the deploy succeeded, show the DNS name of the instance created...
 if [ $? -eq 0 ]; then
