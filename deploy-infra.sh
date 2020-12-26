@@ -21,7 +21,6 @@ aws cloudformation deploy \
   --profile $CLI_PROFILE \
   --stack-name $STACK_NAME-setup \
   --template-file setup.yml \
-  --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides CodePipelineBucket=$CODEPIPELINE_BUCKET
 
@@ -32,7 +31,6 @@ aws cloudformation deploy \
   --profile $CLI_PROFILE \
   --stack-name $STACK_NAME \
   --template-file main.yml \
-  --no-fail-on-empty-changeset \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides EC2InstanceType=$EC2_INSTANCE_TYPE \
     GitHubOwner=$GH_OWNER \
